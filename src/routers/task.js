@@ -13,7 +13,7 @@ router.post('/tasks', auth, async (req, res) => {
         await task.save()
         res.status(201).send(task)
     } catch (err) {
-        res.status(400).send(err) 
+        res.status(400).send({ error: err.message }) 
     }
 })
 
@@ -35,14 +35,14 @@ router.get('/tasks', auth, async (req, res) => {
             path: 'tasks',
             match,
             options: {
-                limit: parseInt(req.query.limit),
-                skip: parseInt(req.query.skip),
+                limit: parseInt(req.query.limit) || 0,
+                skip: parseInt(req.query.skip) || 0,
                 sort
             }
         })
         res.status(202).send(req.user.tasks)
     } catch (err) {
-        res.status(500).send(err)
+        res.status(500).send({ error: err.message })
     }
 })
 
@@ -58,7 +58,7 @@ router.get('/tasks/:id', auth, async (req, res) => {
         
         res.status(202).send(task)
     } catch (err) {
-        res.status(500).send('please insert a valid ID key')
+        res.status(500).send({ error: 'please insert a valid ID key' })
     }
 })
 
@@ -84,7 +84,7 @@ router.patch('/tasks/:id', auth, async (req, res) => {
         await task.save()
         res.status(200).send(task)
     } catch (err) {
-        res.status(400).send(err)
+        res.status(400).send({ error: err.message })
     }
 })
 
@@ -99,7 +99,7 @@ router.delete('/tasks/:id', auth, async (req, res) => {
         }
         res.send(task)
     } catch (err) {
-        res.status(500).send()
+        res.status(500).send({ error: err.message })
     }    
 })
 

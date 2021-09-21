@@ -15,7 +15,7 @@ try {
     req.token = token
     next()
 } catch (err) {
-    res.status(401).send('please authenticate')
+    res.status(401).send({ error: 'please authenticate' })
 }
 
 }
